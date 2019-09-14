@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlGoodsCartDao">
+
+<!-- 添加进购物车 -->
+<insert id="insertObject"   parameterType="com.gl.pj.sys.entity.GlGoodsCart" >
+insert into gl_goods_cart  values (null,#{userid},#{goodsid},#{goodsname},#{goodsprice},#{number},#{totalprice},now());
+</insert>
+<!-- 获取购物车金额合计 -->
+<select id="findCartMoney" resultType="Double">
+select sum(totalprice) from gl_goods_cart where id  in  
+ <foreach collection="ids"  
+                open="("
+                close=")"
+                separator=","
+                item="id">
+               #{id}
+       </foreach>
+       and userid =#{userid}
+</select>
+ 
+ <!-- 获取购物车数量合计 -->
+<select id="findCartNumber" resultType="int">
+select sum(number) from gl_goods_cart where id  in  
+ <foreach collection="ids"  
+                open="("
+                close=")"
+                separator=","
+                item="id">
+               #{id}
+       </foreach>
+       and userid =#{userid}
+</select>
+ 
+ <!-- 删除多条购物车记录 -->
+<delete id="deleteObjects"  >
+delete from  gl_goods_cart where id  in  
+ <foreach collection="ids"  
+                open="("
+                close=")"
+                separator=","
+                item="id">
+               #{id}
+       </foreach>
+       and userid =#{userid}
+</delete>
+
+</mapper>

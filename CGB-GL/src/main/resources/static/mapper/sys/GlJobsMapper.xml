@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlJobsDao">
+
+<delete id="deleteJobs">
+delete from gl_jobs where id  in  
+ <foreach collection="ids"  
+                open="("
+                close=")"
+                separator=","
+                item="id">
+               #{id}
+       </foreach>
+</delete>
+
+
+<select id="findJobsCount" resultType="int">
+select count(*) from gl_jobs   
+  <include refid="likeusername"/>
+</select>  
+ 
+
+<select id="findJobsAll" resultType="com.gl.pojo.sys.entity.GlJobs">
+select * from gl_jobs   
+  <include refid="likeusername"/>
+</select>  
+
+
+ 
+<sql id="likeusername">
+<where>
+<if test="jobname !=null and  jobname !=''">
+name like concat("%",#{jobname},"%")  or phone like concat("%",#{jobname},"%")
+</if>
+</where>
+</sql>
+
+
+</mapper>

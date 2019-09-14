@@ -1,0 +1,26 @@
+{
+	"code":1,
+	"result":{
+		"totalMoney":59,
+		"list":[
+			{
+				"goodsid":"60001",
+				"goodsname":"HTML5+CSS3全面讲解",
+				"goodsprice":19,
+				"number":1,
+				"productImage":"img/img1.jpg"
+				 
+			},
+			{
+				"goodsid":"60002",
+				"goodsname":"Javascrip从入门到精通",
+				"goodsprice":15,
+				"number":1,
+				"productImage":"img/img1.jpg"
+			}
+		]
+	},
+	"total":2,
+	"msg":""
+}
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlNoticesDao">
+
+	<!-- 查询历史公告 -->
+	<select id="findPageObjects" resultType="com.gl.pj.sys.entity.GlNotices">
+		select id, contacts, createtime from gl_notices order by createtime desc;
+	</select>
+
+	<!-- 添加公告 -->
+	<insert id="insertNotices" parameterType="com.gl.pj.sys.entity.GlNotices">
+		insert into gl_notices values (null, #{contacts}, now());
+	</insert>
+
+	<!-- 删除公告 -->
+	<delete id="deleteNotices">
+		delete from gl_notices where id in <foreach collection="ids" open="(" close=")" separator="," item="id">#{id}</foreach>;
+	</delete>
+	
+</mapper>

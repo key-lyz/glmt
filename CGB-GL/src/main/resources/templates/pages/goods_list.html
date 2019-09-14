@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>商品列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+     <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/pc.css">
+    <style type="text/css">
+    .select {
+		display: inline-block;
+		width: 150px;
+		position: relative;
+		vertical-align: middle;
+		padding: 0;
+		overflow: hidden;
+		background-color: #fff;
+		color: #555;
+		border: 1px solid blue;
+		text-shadow: none;
+		border-radius: 4px;	
+		transition: box-shadow 0.25s ease;
+		z-index: 2;
+	}
+ 
+	.select:hover {
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+	}
+ 
+	.select:before {
+		content: "";
+		position: absolute;
+		width: 0;
+		height: 0;
+		border: 10px solid transparent;
+		border-top-color: #ccc;
+		top: 10px;
+		right: 10px;
+		cursor: pointer;
+		z-index: -2;
+	}
+	.select select {
+		cursor: pointer;
+		padding: 5px;
+		width: 100%;
+		border: none;
+		background: transparent;
+		background-image: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+	}
+ 
+	.select select:focus {
+		outline: none;
+ }
+
+</style>
+</head>
+<body>
+
+<div class="layui-fluid child-body">
+  <div class="layui-row">
+        
+        
+          
+        
+        
+        
+                                             <table width="100%" border="0">
+                                               <tr>
+                                                 <td>     
+         <button class="layui-btn layui-btn-sm layui-btn-primary"  onclick="javascript:window.location.href='/goods_add'"    ><i class="layui-icon">&#xe641;</i>添加商品</button>
+ 	<div class="select">
+ 
+                               <select name="classid" onChange="doClassid()"  id="classid" style="height:30PX;color:red; "   >
+			                <option   value="0"  >全部分类</option></div>
+    </select>        
+    
+  
+    
+    </td>
+                                                 <td align="right">  
+                                                 
+                                                   <div class="demoTable">
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="keywords" placeholder="商品名称" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload" onclick="doSearch()">搜索</button>
+</div>
+
+ </td>
+                                               </tr>
+                                             </table>
+                                      
+                                      
+    </div> 
+    
+
+</div>
+
+ 
+<table id="laytable" lay-filter="list"></table>
+ 
+<script type="text/html" id="priceTpl">
+  {{#  if(d.real_price > 0){ }}
+    {{d.price}}/{{d.real_price}}
+  {{#  } else { }}
+    {{d.price}}
+  {{#  } }}
+</script>
+<script type="text/html" id="operate">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><i class="layui-icon">&#xe642;</i>加入购物车</a>
+ 
+        <a class="layui-btn  layui-btn-xs layui-btn-danger layui-btn-normal" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
+
+
+ 
+
+</script>
+<script type="text/template" id="editFormTpl">
+    <form class="layui-form edit-form">
+        <input type="hidden" name="goodsid">
+    
+	  <div class="layui-form-item">
+            <label class="layui-form-label">商品标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="required" readonly    autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品价格</label>
+            <div class="layui-input-block">
+                <input type="text" name="price" lay-verify="required" readonly    autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+    <div class="layui-form-item">
+            <label class="layui-form-label">购买数量</label>
+            <div class="layui-input-block">
+                <input type="text" name="number" value="1" lay-verify="required" placeholder="请输入下单数量" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+    
+
+
+                <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="editForm">确定</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script type="text/template" id="editPriceFormTpl">
+    <form class="layui-form edit-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">价格</label>
+            <div class="layui-input-block">
+                <input type="text" name="price" lay-verify="required" placeholder="请输入价格" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+                <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="editPriceForm">确定</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+ 
+<style type="text/css">
+.layui-table-cell{
+	text-align:center;
+	height: auto;
+	white-space: normal;
+}
+.layui-table img{
+	max-width:300px
+}
+</STYLE>
+ 
+ <script type="text/html" id="imgTplS">
+<img onclick="previewImg('{{d.image}}')" height="100px" src="{{ d.image }}">
+</script>
+     
+
+<script src="layui/layui.all.js"></script>
+<script src="js/pc.min.js"></script>
+
+<script>
+doGoodsClass();
+editItem=null
+table.render({
+    elem: '#laytable', //指定原始表格元素选择器（推荐id选择器）
+    cols: [
+        [ //标题栏
+             { field: 'id', title: 'ID', width: 80 },
+      {field:'imgtpl', title: '图片',width:320 , templet: '#imgTplS'},
+ // { field: 'image111', title: '图片', width:320, templet: function(d){  return '<img  src="'+d.image+'">' }},
+              { field: 'name', title: '标题' ,width:250},
+ 		     { field: 'classname', title: '分类' ,width:150},
+             {field:'price', title: '价格',width:150 , templet: '#priceTpl'},
+            {field:'stock', title: '库存',width:150},
+             { field: 'remark', title: '描述' ,width:340},
+               {fixed: 'right',title: '操作' ,width:250 ,  align:'center', toolbar: '#operate'}
+        ]
+    ],
+    url: '/goods/doObject',
+    id: 'laytable'
+})
+
+
+
+
+    function doSearch() {
+	var keywords = $('#keywords');
+	   //执行重载
+    table.reload('laytable', {
+      page: {
+        curr: 1 //重新从第 1 页开始
+      }
+      ,where: {
+        key:    keywords.val()
+        
+      }
+    }, 'list');
+	
+}
+ 
+
+ function doClassid() {
+	var cid = $('#classid');
+ 
+	   //执行重载
+    table.reload('laytable', {
+      page: {
+        curr: 1 //重新从第 1 页开始
+      }
+      ,where: {
+        cid:    cid.val()
+      }
+    }, 'list');
+	
+}
+ 
+function previewImg(obj) {
+    var img = new Image();  
+    img.src = obj.src;
+  
+    var imgHtml = "<img src='" +obj+ "' width='100%' height='100%' />";  
+    //捕获页  
+    layer.open({  
+        type: 1,  
+        shade: false,  
+        title: false, //不显示标题  
+        //area:['600px','500px'],  
+        area: [600+'px', 480+'px'],  
+        content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响  
+        cancel: function () {  
+            //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });  
+        }  
+    }); 
+}
+
+
+table.on('tool(list)', function(obj) {
+    var data = obj.data
+    if (obj.event === 'delete') {
+        deleteObject([data.id],function () {
+        	
+            obj.del()
+        })
+    } else if (obj.event === 'edit') {
+        editItem=obj
+        layer.open({
+            type: 1,
+
+            title:'加入购物车',
+            move:false,
+            resize:false,
+            area:'400px',
+            shadeClose: true, //点击遮罩关闭
+            content: $('#editFormTpl').html(),
+            success: function(layero, index){
+                 layero.find('input[name="name"]').val(data.name)
+                layero.find('input[name="goodsid"]').val(data.id)
+                layero.find('input[name="price"]').val(data.price)
+               }
+        })
+    }  
+	
+})
+
+top.layui.form.on("submit(editForm)", function(data) {
+
+    if (data.field.number<=0) {
+        error('数量必须大于0')
+        return false
+    }
+   
+    $.ajax({
+        url: '/cart/doInsertObject',
+        data: data.field,
+        success: function(response) {
+            if (response.code == 0) {
+            	success(response.msg);
+	              location.href="/goods_list" ;
+            }else if (response.code==1) {
+                error(response.msg)
+            }
+        }
+    })
+    return false
+})
+
+
+
+ 
+ 
+function deleteObject (id,callback) {
+	
+	if (!confirm('您确定要删除该商品?'))
+	{return ;}
+	
+  $.ajax({
+      url: "/goods/doDeleteObject",
+      data: { id: id.toString() },
+      success: function(response) {
+          if (response.code == 0) {
+              success(response.msg,callback)
+          } else if (response.code==1) {
+              error(response.msg)
+          }
+      }
+  })
+}
+
+
+
+
+ 
+
+
+
+function doGoodsClass () {
+  $.ajax({
+      url: "/goodsclass/doFindObject",
+      data: { id:0 },
+      success: function(response) {
+          if (response.code == 0) {
+          		   var classid=$("#classid");
+        		   classid.empty();
+         		  classid.append("<option   value='0' >全部分类</option>");        	            
+        	  for(var i in response.list){
+         		 
+        		  classid.append("<option value='"+response.list[i].id+"'>"+response.list[i].name+"</option>");        	            
+				 
+        	   }
+           } else if (response.code==1) {
+              error(response.msg)
+          }
+      }
+  })
+}
+function money_format (str) {
+    if(!/\./.test(str)) str += '.00'
+    str += '00'
+    str = str.match(/\d+\.\d{2}/)[0]
+    return str
+}
+</script>
+
+<script>;</script> </body>
+</html>

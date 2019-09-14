@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlPayDao">
+<!-- 获取总数 -->
+<select id="findUserObjectCount" resultType="int">
+select count(*) from gl_pay   
+  <include refid="likeclassid"/>
+</select>  
+ 
+ 
+<!-- 获取列表 -->
+<select id="findUserPayObject" resultType="com.gl.pj.sys.entity.GlPay">
+select * from gl_pay 
+  <include refid="likeclassid"/>
+   order by id asc limit #{page},#{limit}
+</select>  
+
+
+ <!-- 通用条件 -->
+<sql id="likeclassid">
+<where>
+userid =#{userid}  
+<if test="key !=null and  key !=''">
+  and  dingdanhao like concat("%",#{key},"%")  
+</if>
+
+
+
+</where>
+</sql>
+
+
+</mapper>

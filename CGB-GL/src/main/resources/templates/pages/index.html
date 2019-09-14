@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>狗粮</title>
+  <link rel="stylesheet" href="/gouliang/layui/css/layui.css">
+  <link rel="stylesheet" href="/gouliang/css/main.css">
+  <link rel="stylesheet" href="/gouliang/css/style.css">
+    <style type="text/css">
+  .imgsize {width:32px; height:32px;}
+  </style>
+  
+</head>
+
+<body class="layui-layout-body">
+
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <!-- logo -->
+    <div class="layui-logo" ><img   src="/gouliang/img/logo.png" width="122" height="61" ></div>
+
+    <!-- header right -->
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="/gouliang/img/usertx.png" class="layui-nav-img">
+         <font id="userinfo"> userinfo</fot>
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="javascript:;" id="resetpw-btn">修改密码</a></dd>
+          <dd><a href="/logout"  >安全退出</a></dd>
+         </dl>
+      </li>
+     </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed"  id="douser">
+          <a class=""  href="/do_xiadan" target="main" style="font-size:15px">收银系统</a>
+          <dl class="layui-nav-child">
+            <dd  class="layui-this">
+             <a href="/do_notice" target="main">
+             <img src='/gouliang/img/notice.png'  class="imgsize" />
+                &nbsp;&nbsp;系统公告
+              </a>
+            </dd>
+            
+            
+            <dd >
+             <a href="/do_xiadan" target="main">
+             <img src='/gouliang/img/shouyin.png'   class="imgsize" />
+                  &nbsp;&nbsp;收银系统
+              </a>
+            </dd>
+          
+              <dd>
+              <a href="/do_order_list" target="main">
+                <img src='/gouliang/img/order.png'   class="imgsize" />
+                &nbsp;&nbsp;订单列表
+              </a>
+            </dd>
+            
+			     <dd>
+              <a   href="/do_kaoqin"    target="main"><img src="/gouliang/img/kaoqin.png"   class="imgsize"/>
+             &nbsp;&nbsp; 我的考勤
+              </a>
+            </dd>
+			
+          </dl>
+        </li>
+
+        <li class="layui-nav-item layui-nav-itemed" id="doadmin">
+          <a href="javascript:;">管理系统</a>
+          <dl class="layui-nav-child">
+            <dd>
+              <a href="/do_notice"    target="main">
+              <img src='/gouliang/img/notice.png'   class="imgsize" />
+               &nbsp;&nbsp; 系统公告
+              </a>
+            </dd>
+            <dd>
+              <a href="/do_system"    target="main">
+               <img src='/gouliang/img/system.png'  class="imgsize" />
+               &nbsp;&nbsp; 公告设置
+              </a>
+            </dd>
+            <dd>
+              <a href="/do_jobs_list"    target="main">
+                <img src='/gouliang/img/jobs.png'  class="imgsize"  />
+               &nbsp;&nbsp; 职位列表
+              </a>
+            </dd>
+            <dd>
+              <a href="/do_store_list"    target="main">
+               <img src='/gouliang/img/store.png'  class="imgsize" />
+              &nbsp;&nbsp;  店铺列表
+              </a>
+            </dd>
+            <dd>
+              <a href="/do_goods"    target="main">
+               <img src='/gouliang/img/goods.png'  class="imgsize" />
+               &nbsp;&nbsp; 商品管理
+              </a>
+            </dd>
+            <dd>
+              <a href="/do_goods_count"    target="main">
+               <img src="/gouliang/img/count.png"  class="imgsize"  />
+               &nbsp;&nbsp; 商品统计
+              </a>
+            </dd>
+            
+               <dd>
+              <a href="/do_user_count"    target="main">
+               <img src="/gouliang/img/usercount.png"  class="imgsize"  />
+               &nbsp;&nbsp; 用户统计
+              </a>
+            </dd>
+            
+            <dd>
+              <a href="/do_user_list"    target="main">
+                <img src='/gouliang/img/user.png'  class="imgsize"/>
+              &nbsp;&nbsp;  用户列表
+              </a>
+            </dd>
+            <dd>
+              <a href="/do_order_list"    target="main">
+                <img src='/gouliang/img/order.png'   class="imgsize" />
+               &nbsp;&nbsp; 订单管理
+              </a>
+            </dd>
+            
+                        <dd>
+              <a   href="/do_kaoqin_list"    target="main"><img src="/gouliang/img/kaoqin.png"   class="imgsize"/>
+             &nbsp;&nbsp; 员工考勤
+              </a>
+            </dd>
+            
+          </dl>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body"  style="height:100%">
+    <!-- 内容主体区域 -->
+ <iframe name="main" id="main" src="/do_notice"  width="100%" frameborder="0" scrolling="no"></iframe>
+
+  <div class="layui-footer"  id="footer" >
+    <!-- 底部固定区域 -->
+      <a href="/do_cart" target="main" > <button class="layui-btn layui-btn-radius"  style="font-size:20px; ">购物车</button></a>
+    <a href="/do_xiadan" target="main">
+    <button    class="layui-btn layui-btn-radius order" style="font-size:20px">去下单</button></a>
+  </div>
+  </div>
+  
+ 
+
+<script src="layui/layui.all.js"></script>
+<script src="js/pc.min.js"></script>
+
+<script>
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+ 
+
+ 
+<script type="text/template" id="resetpwTpl">
+    <form class="layui-form edit-form">
+	<br>
+        <div class="layui-form-item">
+            <label class="layui-form-label">旧密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="old_password"   style="width:250PX"  lay-verify="required" placeholder="请输入旧密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="new_password"  style="width:250PX" lay-verify="required|pass" placeholder="请输入新密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="re_new_password"  style="width:250PX" lay-verify="required|pass" placeholder="请再次输入新密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-sm" lay-submit lay-filter="resetpw">确定</button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script type="text/javascript">
+  
+doUserinfo();
+
+    $('#resetpw-btn').click(function(e) {
+        layer.open({
+            type: 1,
+            title:'修改密码',
+            move:false,
+            resize:false,
+            area:'400px',
+            shadeClose: true, //点击遮罩关闭
+            content: $('#resetpwTpl').html()
+        })
+    })
+
+    form.on("submit(bankaccount)", function(data) {
+        $.ajax({
+            url: '',
+            data: data.field,
+            success: function(response) {
+                if (response.code == 0) {
+                    success(response.msg,function() {
+                        layer.closeAll('page')
+                    })
+                }else if (response.code==1) {
+                    error(response.msg)
+                }
+            }
+        })
+        return false
+    })
+
+    form.on("submit(resetpw)", function(data) {
+        if (data.field.new_password!=data.field.re_new_password) {
+            error('两次密码输入不一致')
+            return false
+        }
+        $.ajax({
+            url: '/user/doUpdatePassword',
+            data: data.field,
+            success: function(response) {
+                if (response.code == 0) {
+                    success(response.msg,function() {
+                        layer.closeAll('page')
+                    })
+                }else if (response.code==1) {
+                    error(response.msg)
+                }
+            }
+        })
+        return false
+    })
+    
+    
+
+function doUserinfo () {
+  $.ajax({
+	   url: "/user/doFindObject",
+      data: { id:0 },
+      success: function(response) {
+          if (response.code == 0) {
+        	  var admin=response.list.id;
+        	  $("#userinfo").html(response.list.username);
+          	  if (  admin != 1)
+          		  { 
+           		 $("#doadmin").hide(); 
+            
+          		  }
+          	  else
+          		  {
+     			 $('main').attr('src','/do_goods_count');
+          		 $("#douser").hide(); 
+          		 $("#footer").hide(); 
+
+          		  }
+          	  
+          }  
+      }
+  })
+}
+
+form.on("submit(save)", function(data) {
+    $.ajax({
+        url: '/cart/doInsertObject',
+        data: data.field,
+        success: function(response) {
+            if (response.code == 0) {
+                success(response.msg,function() {
+                    layer.closeAll('page')
+                })
+            }else if (response.code==1) {
+                error(response.msg)
+            }
+        }
+    })
+    return false
+})
+
+
+
+    form.on("submit(notcesave)", function(data) {
+		var  content=$("#contacts").val();
+  		if (content==null) { error("请输入公告内容");return; }
+        $.ajax({
+            url: '/notice/addNotices',
+            data: {contacts:content},
+            success: function(response) {
+                if (response.code == 0) {
+                    success(response.msg,function() {
+                    	table.reload('laytable')                   })
+                    	$('#main').attr('src','/do_system');
+                }else if (response.code==1) {
+                    error(response.msg)
+                }
+            }
+        })
+        return false
+    })
+    
+
+
+
+</script>
+ 
+<script type="text/javascript" language="javascript">
+	$(window.parent.document).find("#main").load(function(){
+		var main = $(window.parent.document).find("#main");
+		var thisheight = $(document).height()+30;
+		main.height(thisheight);
+	});
+</script>
+
+
+ 
+
+
+</body>
+</html>

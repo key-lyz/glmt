@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlOrderDao">
+ 
+ 
+ <!--  type: 对应PO或VO的全路径 -->
+<!--  property: 对应PO或VO的字段 把结果给这个字段-->
+<!--  javaType: 字段类型 -->
+<!--  select: 从哪个sql语句里查询 -->
+<!--  column: 查询某一个列 -->
+<resultMap id="Ordervo" type="com.gl.pj.common.vo.GlOrderVo">
+<collection property="goodsinfo" javaType="ArrayList" column="dd"   select="com.gl.pj.sys.dao.GlOrderDao.findOrderGoodsObject"/>
+</resultMap>
+ <!-- 返回类型自定义-->
+ <select id="findUserOrder" resultMap="Ordervo">
+select *,dingdanhao as dd  from gl_order
+<include refid="likeorder"/>
+  order by id desc limit #{page},#{limit}
+</select>  
+
+
+ 
+     
+     
+
+<select id="findOrderCount" resultType="int">
+select count(*) from gl_order   
+  <include refid="likeorder"/>
+</select>  
+
+ 
+ 
+<sql id="likeorder">
+<where>
+state = 1
+<if test="userid  != 1  ">
+ and  userid =#{userid}
+ </if>
+ 
+<if test="dingdanhao !=null and  dingdanhao !=''">
+and dingdanhao = #{dingdanhao}
+</if>
+</where>
+</sql>
+
+
+</mapper>

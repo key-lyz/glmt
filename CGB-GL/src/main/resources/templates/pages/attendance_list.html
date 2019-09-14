@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户列表</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="layui/css/layui.css">
+<link rel="stylesheet" href="css/pc.css">
+
+</head>
+<body>
+	<button class="layui-btn layui-btn-sm layui-btn-primary"
+		onclick="javascript:window.location.href='/punch_clock/punchClock'">
+		<h1><i class="layui-icon">&#xe641;</i>打卡</h1>
+	</button>
+	<button class="layui-btn layui-btn-sm layui-btn-primary"
+		onclick="javascript:window.location.href='/user_add'">
+		<i class="layui-icon">&#xe641;</i>添加用户
+	</button>
+	<button class="layui-btn layui-btn-sm layui-btn-primary"
+		onclick="javascript:window.location.href='/c'">
+		<i class="layui-icon"></i>出勤记录
+	</button>
+
+
+
+	<script src="layui/layui.all.js"></script>
+	<script src="js/pc.min.js"></script>
+
+	<script>
+		$('#clock_on_btn').on('click', function punchC() {
+			layer.open({
+				title : '打卡',
+				area : [ '650px', '350px' ],
+				type : 2,
+				content : '/punch_clock/punchClock',//跳转controller
+				cancel : function() {
+				}
+			});
+		})
+	</script>
+</body>
+</html>

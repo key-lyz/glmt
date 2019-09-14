@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlGoodsClassDao">
+<!-- 修改商品分类 -->
+<update id="UpdateObject"   parameterType="com.gl.pj.sys.entity.GlGoodsClass" >
+ update gl_goods_class  set name=#{name} where id =#{id};
+</update>
+
+<!-- 添加商品分类 -->
+<insert id="InsertObject"   parameterType="com.gl.pj.sys.entity.GlGoodsClass" >
+insert into gl_goods_class  values (null,#{name},#{pid});
+</insert>
+<!-- 获取商品分类数量 -->
+<select id="findObjectCount" resultType="int">
+select count(*) from gl_goods_class   
+  <include refid="likeclassids"/>
+</select>  
+ 
+<!-- 获取商品分类列表 -->
+<select id="findObject" resultType="com.gl.pj.sys.entity.GlGoodsClass">
+select *   from gl_goods_class     
+  <include refid="likeclassids"/>
+</select>  
+
+ <!-- 通用条件 -->
+<sql id="likeclassids">
+<where>
+ 
+<if test="pid == 0 ">
+  pid = #{pid}  
+</if>
+
+ 
+
+</where>
+</sql>
+
+
+</mapper>

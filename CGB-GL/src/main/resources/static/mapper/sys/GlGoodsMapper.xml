@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlGoodsDao">
+
+
+<select id="findGoodsCount" resultType="int">
+select count(*) from gl_goods   
+  <include refid="likeclassid"/>
+</select>  
+ 
+
+<select id="findGoods" resultType="com.gl.pojo.sys.entity.GlGoods">
+select * from gl_goods   
+  <include refid="likeclassid"/>
+</select>  
+
+
+ 
+<sql id="likeclassid">
+<where>
+<if test="classid !=null and  classid !=''">
+classid = #{classid}
+</if>
+</where>
+</sql>
+
+
+</mapper>

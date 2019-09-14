@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>员工销售额列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+     <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/pc.css">
+    
+</head>
+<body   style="background-color:white; " >
+ 
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>员工销售额统计</legend>
+</fieldset>
+
+
+<div class="layui-fluid child-body">
+    <div class="layui-row">
+    <table width="100%" border="0">
+  <tr>
+    <td> 
+    <div class="layui-inline">
+           <button class="layui-btn  layui-btn-primary"    onclick="doExcelPort()"   ><i class="layui-icon">&#xe641;</i>导出Excel</button>
+    
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="year" placeholder="请选择统计日期">
+      </div>
+                <button class="layui-btn"  style="background-color: #fa7803"   data-type="reload" onclick="doSearch()">确定</button>
+      
+    </div>
+    
+     </td>
+    <td align="right">	<div class="demoTable">
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="keywords" placeholder="员工名称" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload"   style="background-color: #fa7803"  onclick="doSearch()">搜索</button>
+</div></td>
+  </tr>
+</table>
+
+           
+     
+	
+          
+  </div> 
+    <table id="laytable" lay-filter="list"></table>
+    
+
+</div>
+
+ 
+
+<script src="layui/layui.all.js"></script>
+<script src="js/pc.min.js"></script>
+
+ <script type="text/html" id="priceInfo">
+           ￥ {{  money_format(d.xse) }}  
+         </script>
+ 
+
+<script>
+editItem=null
+ table.render({
+    elem: '#laytable', //指定原始表格元素选择器（推荐id选择器）
+    title: '员工销售额统计表',
+    height: 'full-270',
+   totalRow: true ,
+    cols: [
+        [ //标题栏
+      	   { field: 'id', title: '员工编号' ,width:100, unresize: true, sort: true},
+
+         	   { field: 'name', title: '员工名称' ,width:350, unresize: true, sort: true, totalRowText: '合计'},
+               {field:'xse',title:'销售额',width:200,templet:"#priceInfo" , sort: true, totalRow: true },
+           
+        ]
+    ],
+    url: '/user/doCount',
+    id: 'laytable'
+})
+
+      function doSearch() {
+	var keywords = $('#keywords');
+	var year = $('#year');
+	   //执行重载
+    table.reload('laytable', {
+      page: {
+        curr: 1 //重新从第 1 页开始
+      }
+      ,where: {
+        key:    keywords.val(),
+        riqi:    year.val()
+        
+      }
+    }, 'data');
+	
+}
+ 
+	  
+ 
+ 
+  
+ 
+ 
+ 
+ 
+function money_format (str) {
+	if (str==null) {return 0.00};
+    if(!/\./.test(str)) str += '.00'
+    str += '00'
+    str = str.match(/\d+\.\d{2}/)[0]
+    return str
+}
+</script>
+<script>
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+  
+ 
+  
+  //自定义格式
+  laydate.render({
+    elem: '#year'
+    ,format: 'yyyy-MM-dd'
+  });
+ 
+ 
+});
+
+
+function doExcelPort () {
+	  var year=$("#year").val();
+	  var key=$("#keywords").val();
+	//获取当前页
+	  var recodePage = $(".layui-laypage-skip .layui-input").val();
+	  //获取当前页条数
+	  var recodeLimit = $(".layui-laypage-limits").find("option:selected").val();
+	 
+	  if (recodePage<1 && recodeLimit<1 )
+	  { layer.msg('非法操作');return;}
+	  
+	if (!confirm('您确定要导出当前数据?')) {return;}
+	  window.location.href="/excel/userexport?key="+key+"&riqi="+year+"&limit="+recodeLimit+"&page="+recodePage+"";   
+	  
+	}
+ 
+	
+</script>
+
+ </body>
+</html>

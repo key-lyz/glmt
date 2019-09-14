@@ -1,0 +1,85 @@
+/* 自己定义的类 */
+.content {
+  padding: 20px 40px;
+}
+
+/* 布局常用 */
+.flex {
+  display: flex;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+/* 商品 */
+.prod-list {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.prod-box {
+  cursor: pointer;
+  width: 184px;
+  position: relative;
+  margin-right: 36px;
+  margin-bottom: 36px;
+}
+
+.prod-img {
+  border-radius: 15px;
+  width: 184px;
+  height: 184px;
+  background-color: #eee;
+}
+
+.prod-content {}
+
+.prod-top {
+  margin: 12px 0;
+  display: flex;
+  font-weight: bold;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prod-title {
+  font-size: 18px;
+  color: #313131;
+}
+
+.prod-price {
+  font-size: 18px;
+  color: #fa7803;
+}
+
+.prod-bottom {
+  display: flex;
+  align-items: center;
+}
+
+.prod-desc {
+  font-size: 14px;
+  color: #d2d2d2;
+}
+
+.prod-num {
+  align-self: flex-end;
+  color: #a0a0a0;
+}

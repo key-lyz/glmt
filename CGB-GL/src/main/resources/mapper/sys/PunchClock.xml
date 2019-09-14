@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.PunchClockDao">
+ <insert id="add_in" parameterType="com.gl.pj.common.vo.PunchClock">
+    insert into punch_clock(id,userid,developername,punchinTime,attendanceTime,userip,loginaddress)
+    values(null,#{userid},#{developername},#{punchinTime},Date(now()),#{userip},#{loginaddress})
+
+    </insert>
+ 
+    <update id="up_out" parameterType="com.gl.pj.common.vo.PunchClock">
+      update punch_clock set
+      punchoutTime=#{punchoutTime}   where  attendanceTime=Date(now()) and userid=#{userid}
+    </update>
+ 
+    <update id="late_result" parameterType="com.gl.pj.common.vo.PunchClock">
+      update punch_clock set
+      remark=#{remark}   where attendanceTime=#{attendanceTime} and userid=#{userid}    </update>
+ 
+    <select id="if_punchin" resultType="com.gl.pj.common.vo.PunchClock">
+        select * from punch_clock where attendanceTime=Date(now()) and userid=#{userid}
+    </select>
+ 
+    <select id="if_punchout" resultType="com.gl.pj.common.vo.PunchClock">
+        select * from punch_clock  where attendanceTime=Date(now()) and userid=#{userid}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>订单列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+     <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/pc.css">
+    
+</head>
+<body>
+
+<div class="layui-fluid child-body">
+    <div class="layui-row">
+    <table width="100%" border="0">
+  <tr>
+    <td>  </td>
+    <td align="right">	<div class="demoTable">
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="keywords" placeholder="订单号" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload" onclick="doSearch()">搜索</button>
+</div></td>
+  </tr>
+</table>
+
+           
+     
+	
+          
+  </div> 
+    
+
+</div>
+
+ 
+<table id="laytable" lay-filter="list"></table>
+ 
+ 
+<script type="text/html" id="operate">
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">查看</a>
+
+ </script>
+ 
+ 
+<script type="text/template" id="editFormTpl">
+    <form class="layui-form edit-form">
+        <input type="hidden" name="id">
+     <div class="layui-form-item">
+            <label class="layui-form-label">订单号</label>
+            <div class="layui-input-block">
+			 
+                <input type="text" name="dingdanhao" lay-verify="required"   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+     <div class="layui-form-item">
+            <label class="layui-form-label">清单</label>
+            <div class="layui-input-block">
+                <input type="text" name="goodsinfo" lay-verify="required"   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+     <div class="layui-form-item">
+            <label class="layui-form-label">数量</label>
+            <div class="layui-input-block">
+                <input type="number" name="number" lay-verify="required"   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+     <div class="layui-form-item">
+            <label class="layui-form-label">单价</label>
+            <div class="layui-input-block">
+                <input type="text" name="goodsprice" lay-verify="required"   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+     <div class="layui-form-item">
+            <label class="layui-form-label">合计</label>
+            <div class="layui-input-block">
+                <input type="text" name="totalprice" lay-verify="required"   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+
+     <div class="layui-form-item">
+            <label class="layui-form-label">下单时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="date" lay-verify="required"   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+     <div class="layui-form-item">
+            <label class="layui-form-label">操作用户</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="required"   autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+ 
+
+  
+               
+    </form>
+</script>
+ 
+ 
+ 
+ 
+ 
+     
+
+<script src="layui/layui.all.js"></script>
+<script src="js/pc.min.js"></script>
+
+<script>
+editItem=null
+ table.render({
+    elem: '#laytable', //指定原始表格元素选择器（推荐id选择器）
+    cols: [
+        [ //标题栏
+            { field: 'id', title: 'ID', width: 80 },
+             { field: 'dingdanhao', title: '订单号' ,width:250},
+ 		     { field: 'goodsname', title: '清单' ,width:300},
+ 		     { field: 'number', title: '数量' ,width:100},
+ 		     { field: 'goodsprice', title: '价格' ,width:100},
+             {field:'date', title: '下单时间',width:200 },
+             {field:'totalprice', title: '合计',width:200},
+             { field: 'username', title: '操作用户' ,width:200},
+               {fixed: 'right',title: '操作'  ,  align:'center', toolbar: '#operate'}
+        ]
+    ],
+ 
+    url: '/ajax/order',
+    id: 'laytable'
+})
+
+      function doSearch() {
+	var keywords = $('#keywords');
+	   //执行重载
+    table.reload('laytable', {
+      page: {
+        curr: 1 //重新从第 1 页开始
+      }
+      ,where: {
+        key:    keywords.val()
+        
+      }
+    }, 'data');
+	
+}
+ 
+	  
+ 
+ 
+  
+ 
+  
+
+table.on('tool(list)', function(obj) {
+    var data = obj.data
+     if (obj.event === 'delete') {
+        deleteObject([data.id],function () {
+            obj.del()
+        })
+        
+         
+    } else if (obj.event === 'edit') {
+        editItem=obj
+        layer.open({
+            type: 1,
+
+            title:'查看订单',
+            move:false,
+            resize:false,
+            area:'400px',
+            shadeClose: true, //点击遮罩关闭
+            content: $('#editFormTpl').html(),
+            success: function(layero, index){
+                layero.find('input[name="dingdanhao"]').val(data.dingdanhao)
+                layero.find('input[name="goodsinfo"]').val(data.goodsname+"["+data.goodsid+"]")
+                layero.find('input[name="number"]').val(data.number)
+                layero.find('input[name="goodsprice"]').val(data.goodsprice)
+                layero.find('input[name="totalprice"]').val(data.totalprice)
+                layero.find('input[name="date"]').val(data.date)
+                layero.find('input[name="username"]').val(data.username)
+ 
+              }
+        })
+    } 
+ 
+	
+})
+ 
+
+  
+  
+ 
+
+ 
+
+
+function money_format (str) {
+    if(!/\./.test(str)) str += '.00'
+    str += '00'
+    str = str.match(/\d+\.\d{2}/)[0]
+    return str
+}
+</script>
+ </body>
+</html>

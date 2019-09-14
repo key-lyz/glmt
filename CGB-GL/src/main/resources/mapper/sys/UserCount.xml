@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.UserCountDao">
+<!-- 订单统计 -->
+<select id="findUserMoneyCount"   resultType="com.gl.pj.common.vo.UserCountVo" >
+ select id,username as name ,
+ (select sum(totalprice) from gl_order_goods     <include refid="likesqls"/>    ) 
+ as xse from gl_user  
+   <include refid="likesql"/>
+  order by id asc limit #{page},#{limit}
+</select>
+ 
+ 
+ <!-- 获取数量 -->
+<select id="findUserCount" resultType="int">
+select count(*) from gl_user   
+  <include refid="likesql"/>
+</select>  
+
+ 
+ <!-- 通用条件 -->
+<sql id="likesql">
+<where>
+ 
+<if test="key !=null and  key !=''">
+   and  username like concat("%",#{key},"%") 
+</if>
+
+</where>
+</sql>
+
+
+ <!-- 通用子条件 -->
+<sql id="likesqls">
+<where>
+ userid=gl_user.id 
+ 
+ <if test="riqi !=null and  riqi !=''">
+   and  year(date)=year(#{riqi})  and  month(date)=month(#{riqi})   and day(date)=day(#{riqi})
+</if>
+
+</where>
+
+</sql>
+ 
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlOrderDao">
+
+
+<select id="findOrderCount" resultType="int">
+select count(*) from gl_order   
+  <include refid="likeorder"/>
+</select>  
+ 
+
+<select id="findOrderAll" resultType="com.gl.pojo.sys.entity.GlOrder">
+select * from gl_order   
+  <include refid="likeorder"/>
+</select>  
+
+
+ 
+<sql id="likeorder">
+<where>
+<if test="dingdanhao !=null and  dingdanhao !=''">
+dingdanhao = #{dingdanhao}
+</if>
+</where>
+</sql>
+
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlJobsDao">
+<!-- 修改职位 -->
+<update id="updateObject"   parameterType="com.gl.pj.sys.entity.GlJobs" >
+ update gl_jobs  set name=#{name} where id =#{id};
+</update>
+
+<!-- 添加职位 -->
+<insert id="insertObject"   parameterType="com.gl.pj.sys.entity.GlJobs" >
+insert into gl_jobs  values (null,#{name});
+</insert>
+
+
+
+<!-- 删除职位 -->
+<delete id="deleteObject">
+delete from gl_jobs where id  in  
+ <foreach collection="ids"  
+                open="("
+                close=")"
+                separator=","
+                item="id">
+               #{id}
+       </foreach>
+</delete>
+
+<!-- 获取职位总数 -->
+<select id="findObjectCount" resultType="int">
+select count(*) from gl_jobs   
+  <include refid="likeusername"/>
+</select>  
+ 
+<!-- 获取职位列表 -->
+
+<select id="findObject" resultType="com.gl.pj.sys.entity.GlJobs">
+select * from gl_jobs  
+  <include refid="likeusername"/>
+    order by id asc limit #{page},#{limit}
+</select>  
+
+<!-- 通用条件 -->
+ 
+<sql id="likeusername">
+<where>
+<if test="jobname !=null and  jobname !=''">
+name like concat("%",#{jobname},"%")  or phone like concat("%",#{jobname},"%")
+</if>
+</where>
+
+
+</sql>
+</mapper>

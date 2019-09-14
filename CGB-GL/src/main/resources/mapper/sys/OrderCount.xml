@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.OrderCountDao">
+<!-- 订单统计 -->
+<select id="findOrderCount"   resultType="com.gl.pj.common.vo.OrderCountVo" >
+select  A.id,
+A.name ,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id      and month(B.date) =1    <include refid="yearsql"/>  ) as one,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id    and month(B.date) =2      <include refid="yearsql"/>  ) as two,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id       and month(B.date) =3   <include refid="yearsql"/>  ) as three,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id       and month(B.date) =4  <include refid="yearsql"/>  ) as four,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id      and month(B.date) =5  <include refid="yearsql"/>  ) as five,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id     and month(B.date) =6  <include refid="yearsql"/>  ) as six,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id      and month(B.date) =7    <include refid="yearsql"/>  ) as seven,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id       and month(B.date) =8   <include refid="yearsql"/>  ) as eight,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id      and month(B.date) =9  <include refid="yearsql"/>  ) as nine,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id       and month(B.date) =10  <include refid="yearsql"/>  ) as ten,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id      and month(B.date) =11  <include refid="yearsql"/>  ) as eleven,
+(select sum(B.totalprice) from gl_order_goods  B where b.goodsid =A.id       and month(B.date) =12  <include refid="yearsql"/>  ) as twelve
+from 
+gl_goods A
+  <include refid="likesql"/>
+  order by id asc limit #{page},#{limit}
+</select>
+ 
+ 
+ <!-- 获取数量 -->
+<select id="findOrderGoodsCount" resultType="int">
+select count(*) from gl_goods   
+  <include refid="likesql"/>
+</select>  
+
+  
+ <!-- 年条件 -->
+<sql id="yearsql">
+ 
+<if test="year !=null and  year !=''">
+ and year(B.date)  =#{year}
+ </if>
+
+ 
+</sql>
+
+ 
+ <!-- 通用条件 -->
+<sql id="likesql">
+<where>
+<if test="key !=null and  key !=''">
+   name like concat("%",#{key},"%") 
+</if>
+
+</where>
+</sql>
+ 
+</mapper>

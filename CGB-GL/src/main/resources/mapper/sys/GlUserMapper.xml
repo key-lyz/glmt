@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlUserDao">
+
+<!-- 修改用户 -->
+<update id="updateObject"  >
+ 
+ update gl_user set store=#{store},jobid=#{jobid},phone=#{phone},email=#{email},operation=#{operation} 
+ <if test="password !=null and  password != '' ">
+ ,password=#{password} ,salt=#{salt} 
+ </if>
+   where id =#{id}
+ </update>  
+
+
+<!-- 删除用户 -->
+<delete id="delObject">
+delete from gl_user where id  in  
+ <foreach collection="ids"  
+                open="("
+                close=")"
+                separator=","
+                item="id">
+               #{id}
+       </foreach>
+</delete>
+
+<!-- 查询用户数量 -->
+<select id="findCount" resultType="int">
+select count(*) from gl_user   
+  <include refid="likeusername"/>
+</select>  
+ 
+<!-- 查询用户列表 -->
+<select id="findAll" resultType="com.gl.pj.common.vo.GlUserVo">
+select *
+,(select name from gl_jobs where gl_jobs.id=gl_user.jobid) as jobname 
+,(select name from gl_store where gl_store.id=gl_user.store) as storename 
+
+from gl_user
+  <include refid="likeusername"/>
+</select>  
+
+
+ 
+<sql id="likeusername">
+<where>
+<if test="keyworks !=null and  keyworks !=''">
+username like concat("%",#{keyworks},"%")  or phone like concat("%",#{keyworks},"%")
+</if>
+</where>
+</sql>
+
+
+</mapper>

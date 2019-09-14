@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gl.pj.sys.dao.GlKaoqinDao">
+
+<!-- 获取总数 -->
+<select id="findObjectCount" resultType="int">
+select count(*) from     punch_clock
+  <include refid="likesqls"/>
+</select>  
+ 
+<!-- 获取列表 -->
+
+<select id="findObject" resultType="com.gl.pj.sys.entity.GlKaoqin">
+select * from punch_clock  
+  <include refid="likesqls"/>
+    order by id desc limit #{page},#{limit}
+</select>  
+
+<!-- 通用条件 -->
+ 
+<sql id="likesqls">
+<where>
+1=1 
+<if test="key !=null and  key !=''">
+and developername like concat("%",#{key},"%")  
+</if>
+
+<if test="riqi !=null and  riqi !=''">
+and attendanceTime = #{riqi}
+</if>
+</where>
+
+
+</sql>
+</mapper>
